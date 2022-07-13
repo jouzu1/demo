@@ -43,6 +43,7 @@ public class Controller {
         String priceText = "";
         String rateText = "";
         String storeText = "";
+        String imageSource = "";
 
         for (int i = 1; i < 10; i++) {
             String webPage = "https://www.tokopedia.com/p/handphone-tablet/handphone?page=1&rt=4,5";
@@ -51,15 +52,19 @@ public class Controller {
             Document document = Jsoup.connect(webPage).get();
             Elements titles = document.getElementsByClass("css-1bjwylw");
             Elements prices = document.getElementsByClass("css-o5uqvq");
-            Elements ratingsElements = document.getElementsByClass("css-t70v7i");
+            Elements ratingsElements = document.getElementsByClass("css-153qjw7");
             Elements merchantStores = document.getElementsByClass("css-1kr22w3");
 
-            Elements linkProducts = document.getElementsByClass("css-89jnbj");
-            // System.out.println(linkProducts.text());
-            for(Element linkProduct : linkProducts){
-                String linkProductDetail = linkProduct.attr("abs:href");
-                System.out.println(linkProductDetail);
-                Document productDetail = Jsoup.connect(linkProductDetail).userAgent("Opera").timeout(0).get();
+            Elements linkImages = document.getElementsByClass("css-bk6tzz e1nlzfl2");
+            for(Element linkImage : linkImages){
+                // System.out.println(linkImage.toString());
+                Element div16vw0vn = linkImage.getElementsByClass("css-16vw0vn").first();
+                    Element div79elbk = div16vw0vn.getElementsByClass("css-79elbk").first();
+                    Element div1c0vu8l = div79elbk.getElementsByClass("css-1c0vu8l").first();
+                    Element divnzbstz = div1c0vu8l.getElementsByClass("css-nzbstz").first();
+                    Element img = divnzbstz.getElementsByTag("img").first();
+                    imageSource = img.attr("src");
+                    // System.out.println(imageSource.toString());
 
             }
 
@@ -68,14 +73,17 @@ public class Controller {
                 for (Element price : prices) {
                     priceText = price.text();
                     for (Element ratingsElement : ratingsElements) {
-                        rateText = ratingsElement.text();
+                        // System.out.println
+                        // Element getRate = ratingsElement.getElementsByClass("css-177n1u3").first();
+                        // int countRate = getRate.childNodeSize();
+                        // // rateText = ratingsElement.text();
                     }
                 }
             }
             for (Element merchantStore : merchantStores) {
                 storeText = merchantStore.text();
             }
-            productList.add(new String[] { titleText, priceText, rateText, storeText });
+            productList.add(new String[] { titleText, priceText, rateText, storeText, imageSource });
             page = i;
         }
 
@@ -86,13 +94,19 @@ public class Controller {
                 Document document = Jsoup.connect(webPage).get();
                 Elements titles = document.getElementsByClass("css-1bjwylw");
                 Elements prices = document.getElementsByClass("css-o5uqvq");
-                Elements ratingsElements = document.getElementsByClass("css-t70v7i");
+                Elements ratingsElements = document.getElementsByClass("css-153qjw7");
                 Elements merchantStores = document.getElementsByClass("css-1kr22w3");
 
-                Elements linkProducts = document.getElementsByClass("css-89jnbj");
-                for(Element linkProduct : linkProducts){
-                    String linkProductDetail = linkProduct.attr("abs:href");
-                    // System.out.println(linkProductDetail);
+                Elements linkImages = document.getElementsByClass("css-bk6tzz e1nlzfl2");
+                for(Element linkImage : linkImages){
+                    // System.out.println(linkImage.toString());
+                    Element div16vw0vn = linkImage.getElementsByClass("css-16vw0vn").first();
+                        Element div79elbk = div16vw0vn.getElementsByClass("css-79elbk").first();
+                        Element div1c0vu8l = div79elbk.getElementsByClass("css-1c0vu8l").first();
+                        Element divnzbstz = div1c0vu8l.getElementsByClass("css-nzbstz").first();
+                        Element img = divnzbstz.getElementsByTag("img").first();
+                        imageSource = img.attr("src");
+                        // System.out.println(imageSource.toString());
 
                 }
 
@@ -108,10 +122,10 @@ public class Controller {
                 for (Element merchantStore : merchantStores) {
                     storeText = merchantStore.text();
                 }
-                productList.add(new String[] { titleText, priceText, rateText, storeText });
+                productList.add(new String[] { titleText, priceText, rateText, storeText, imageSource });
             }
             CSVWriter writer = new CSVWriter(new FileWriter("List of Top 100 Smartphone Product From Tokopedia.csv"));
-            String[] header = { "Product", "Price", "Rating", "Merchant Store" };
+            String[] header = { "Product", "Price", "Rating", "Merchant Store", "URL Link" };
             writer.writeNext(header);
             writer.writeAll(productList, true);
             writer.close();
