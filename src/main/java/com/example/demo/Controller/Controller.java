@@ -73,17 +73,19 @@ public class Controller {
                 for (Element price : prices) {
                     priceText = price.text();
                     for (Element ratingsElement : ratingsElements) {
-                        // System.out.println
-                        // Element getRate = ratingsElement.getElementsByClass("css-177n1u3").first();
-                        // int countRate = getRate.childNodeSize();
-                        // // rateText = ratingsElement.text();
+                        // System.out.println(ratingsElement.toString());
+                        Elements getRate = ratingsElement.getElementsByClass("css-177n1u3");
+                        rateText = Integer.toString(getRate.size());
+                        // rateText = ratingsElement.text();
+
                     }
                 }
             }
             for (Element merchantStore : merchantStores) {
                 storeText = merchantStore.text();
             }
-            productList.add(new String[] { titleText, priceText, rateText, storeText, imageSource });
+            // System.out.println(countRate);
+            productList.add(new String[] { titleText, priceText, rateText, storeText, imageSource});
             page = i;
         }
 
@@ -115,14 +117,18 @@ public class Controller {
                     for (Element price : prices) {
                         priceText = price.text();
                         for (Element ratingsElement : ratingsElements) {
-                            rateText = ratingsElement.text();
+                            // System.out.println(ratingsElement.toString());
+                            Elements getRate = ratingsElement.getElementsByClass("css-177n1u3");
+                            rateText = Integer.toString(getRate.size());
+                            // rateText = ratingsElement.text();
+
                         }
                     }
                 }
                 for (Element merchantStore : merchantStores) {
                     storeText = merchantStore.text();
                 }
-                productList.add(new String[] { titleText, priceText, rateText, storeText, imageSource });
+                productList.add(new String[] { titleText, priceText, rateText, storeText, imageSource});
             }
             CSVWriter writer = new CSVWriter(new FileWriter("List of Top 100 Smartphone Product From Tokopedia.csv"));
             String[] header = { "Product", "Price", "Rating", "Merchant Store", "URL Link" };
